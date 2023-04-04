@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { UseMySelector, UseMyDispatch } from '../util/myRedux';
+import { useMySelector, useMyDispatch } from '../util/myRedux';
 
 export const CounterAppFunc = () => {
-    const counter = UseMySelector((state) => state.counter);
-    const dispatch = UseMyDispatch();
+    const counter = useMySelector((state) => state.counter);
+    const dispatch = useMyDispatch();
     return (
         <div>
             <h1>Hooks</h1>

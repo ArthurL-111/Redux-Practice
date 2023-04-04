@@ -1,5 +1,6 @@
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { CounterContext } from "../redux/context";
+import store from "../redux/store";
 
 export function myCreateStore (reducer, preloadedState) {
     const store = {
@@ -41,7 +42,7 @@ export function myCreateStore (reducer, preloadedState) {
     
 }
 
-export function UseMySelector (selector) {
+export function useMySelector (selector) {
     const store = useContext(CounterContext);
     const [state, setState] = useState(selector(store.getState()));
 
@@ -56,8 +57,63 @@ export function UseMySelector (selector) {
     return state;
 }
 
-export function UseMyDispatch () {
+export function useMyDispatch () {
     const store = useContext(CounterContext);
 
     return (action) => store.dispatch(action);
+}
+
+const mapStateToProps = (state) => ({
+    counter: state.counter,
+  })
+  
+const mapDispatchToProps = (dispatch) => {
+    return {
+        increment: () => dispatch({ type: 'counter/incremented' }),
+        decrement: () => dispatch({ type: 'counter/decremented' }),
+    }
+}
+
+export function myConnect (mapStateToProps, mapDispatchToProps) {
+
+    function withConnect (WrappedComponent) {
+        
+        return class NewComponent extends React.Component {
+            static contextType = CounterContext;
+
+            constructor(props) {
+                super(props);
+                this.state = {
+                    stateToProps: mapStateToProps(store.getState()),
+                    dispatchToProps: mapDispatchToProps(store.dispatch)
+                }
+            }
+
+            componentDidMount() {
+                this.unsubscribe = store.subscribe(() => {
+                    this.setState({
+                        stateToProps: mapStateToProps(store.getState(), this.props)
+                    });
+                });
+            }
+
+            componentWillUnmount() {
+                if (this.unsubscribe) {
+                    this.unsubscribe();
+                }
+            }
+            
+            render() {
+                return (
+                    <WrappedComponent 
+                        {...this.props}
+                        {...this.state.stateToProps}
+                        {...this.state.dispatchToProps}
+                    />
+                )
+            }
+        }
+    }
+
+    return withConnect;
 }

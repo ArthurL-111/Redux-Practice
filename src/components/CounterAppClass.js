@@ -1,9 +1,11 @@
 import React from "react";
 import { Component } from "react";
 import { connect } from "react-redux"
+import { myConnect } from "../util/myRedux";
 
 export class CounterAppClass extends Component {
     render() {
+        console.log(this.props)
         return (
             <div>
                 <h1>Class</h1>
@@ -26,4 +28,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CounterAppClass);
+export default myConnect(mapStateToProps, mapDispatchToProps)(CounterAppClass);

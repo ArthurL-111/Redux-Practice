@@ -6,7 +6,7 @@ import { CounterAppFunc } from './components/CounterAppFunc';
 function App() {
   return (
       <div className="App">
-        {/* <CounterAppClass /> */}
+        <CounterAppClass />
         <CounterAppFunc />
       </div>
   );
