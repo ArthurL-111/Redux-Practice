@@ -63,17 +63,6 @@ export function useMyDispatch () {
     return (action) => store.dispatch(action);
 }
 
-const mapStateToProps = (state) => ({
-    counter: state.counter,
-  })
-  
-const mapDispatchToProps = (dispatch) => {
-    return {
-        increment: () => dispatch({ type: 'counter/incremented' }),
-        decrement: () => dispatch({ type: 'counter/decremented' }),
-    }
-}
-
 export function myConnect (mapStateToProps, mapDispatchToProps) {
 
     function withConnect (WrappedComponent) {
